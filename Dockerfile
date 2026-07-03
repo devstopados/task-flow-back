@@ -1,4 +1,4 @@
-FROM php:8.4-cli-bookworm
+FROM php:8.4-fpm-bookworm
 
 ARG NODE_VERSION=20
 
@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     unzip \
     curl \
+    netcat-openbsd \
     libpng-dev \
     libzip-dev \
     libonig-dev \
@@ -43,12 +44,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
 
 COPY . /var/www/html
 
-RUN composer install --no-interaction --optimize-autoloader --no-dev \
+RUN composer install --no-interaction --optimize-autoloader \
     && npm install --ignore-scripts \
     && npm run build \
     && chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
-
-EXPOSE 8000
-
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]

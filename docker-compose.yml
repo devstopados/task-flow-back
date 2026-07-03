@@ -1,13 +1,24 @@
 version: '3.8'
 
 services:
+  nginx:
+    image: nginx:alpine
+    container_name: task-flow-nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - task-flow-network
+
   app:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: task-flow-app
-    ports:
-      - "8000:8000"
     environment:
       APP_NAME: "Task Flow"
       APP_ENV: local
@@ -62,9 +73,12 @@ services:
     command: >
       sh -c "
         if [ ! -f .env ]; then cp .env.example .env; fi &&
-        if [ -z \"\$APP_KEY\" ]; then php artisan key:generate; fi &&
+        if [ -z \$$APP_KEY ]; then php artisan key:generate; fi &&
+        echo 'Waiting for MySQL to be ready...' &&
+        while ! nc -z mysql 3306; do sleep 1; done &&
+        echo 'MySQL is ready!' &&
         php artisan migrate --force &&
-        php artisan serve --host=0.0.0.0 --port=8000
+        php-fpm
       "
 
   mysql:
