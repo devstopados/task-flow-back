@@ -53,6 +53,61 @@ In order to ensure that the Laravel community is welcoming to all, please review
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
+## Running with Docker
+
+This project includes Docker support using PHP 8.4 and MySQL 8.0.
+
+### Requirements
+
+- Docker
+- Docker Compose
+
+### Setup
+
+Create a `.env` file based on the example:
+
+```bash
+cp .env.example .env
+```
+
+Build and start the containers:
+
+```bash
+docker-compose up -d --build
+```
+
+The application will be available at [http://localhost:8000](http://localhost:8000).
+
+Migrations are executed automatically when the container starts. To run them manually:
+
+```bash
+docker-compose exec app php artisan migrate
+```
+
+### Services
+
+- **app**: Laravel application running on `http://localhost:8000`
+- **mysql**: MySQL 8.0 database accessible on port `3306`
+
+### Common commands
+
+```bash
+# Stop containers
+docker-compose down
+
+# Stop containers and remove database volume
+docker-compose down -v
+
+# Run Artisan commands
+docker-compose exec app php artisan [command]
+
+# Run Composer commands
+docker-compose exec app composer [command]
+
+# Run NPM commands
+docker-compose exec app npm [command]
+```
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
