@@ -20,6 +20,8 @@ return [
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
+    'master_token' => env('MASTER_TOKEN'),
+
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards

@@ -173,3 +173,45 @@ test('authenticated user can logout and revoke token', function () {
 
     $this->assertDatabaseCount('personal_access_tokens', 0);
 });
+
+test('master token authenticates successfully in local environment', function () {
+    config(['app.env' => 'local']);
+    config(['auth.master_token' => 'taskflow-dev-master-token']);
+
+    $response = $this->withHeader('Authorization', 'Bearer taskflow-dev-master-token')
+        ->getJson(route('auth.me'));
+
+    $response->assertStatus(200)
+        ->assertJsonStructure([
+            'user' => ['id', 'name', 'email', 'created_at', 'updated_at'],
+        ])
+        ->assertJson([
+            'user' => [
+                'email' => 'master@taskflow.local',
+                'name' => 'Master Developer',
+            ],
+        ]);
+});
+
+test('master token is rejected when not in local environment', function () {
+    config(['app.env' => 'production']);
+    config(['auth.master_token' => 'taskflow-dev-master-token']);
+
+    $response = $this->withHeader('Authorization', 'Bearer taskflow-dev-master-token')
+        ->getJson(route('auth.me'));
+
+    $response->assertStatus(401);
+});
+
+test('master token can perform logout safely in local environment', function () {
+    config(['app.env' => 'local']);
+    config(['auth.master_token' => 'taskflow-dev-master-token']);
+
+    $response = $this->withHeader('Authorization', 'Bearer taskflow-dev-master-token')
+        ->postJson(route('auth.logout'));
+
+    $response->assertStatus(200)
+        ->assertJson([
+            'message' => 'Logged out successfully.',
+        ]);
+});

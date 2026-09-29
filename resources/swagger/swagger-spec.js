@@ -37,7 +37,7 @@ export default {
                 type: 'http',
                 scheme: 'bearer',
                 bearerFormat: 'JWT',
-                description: 'Insira o token Sanctum no formato: Bearer {token}',
+                description: 'Insira o token Sanctum no formato: Bearer {token}. Em ambiente local, você também pode usar o MASTER_TOKEN (ex: taskflow-dev-master-token).',
             },
         },
         schemas: {

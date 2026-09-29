@@ -25,6 +25,7 @@ services:
       APP_KEY: "${APP_KEY}"
       APP_DEBUG: "true"
       APP_URL: http://localhost:8000
+      MASTER_TOKEN: "${MASTER_TOKEN:-taskflow-dev-master-token}"
       APP_LOCALE: en
       APP_FALLBACK_LOCALE: en
       APP_FAKER_LOCALE: en_US
