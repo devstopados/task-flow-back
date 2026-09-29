@@ -52,7 +52,7 @@
     "src": "_instrument-sans-600-normal-DMks36a2.woff"
   },
   "resources/css/app.css": {
-    "file": "assets/app-B8U6qxCO.css",
+    "file": "assets/app-DaXOkTP3.css",
     "name": "app",
     "names": [
       "app.css"
@@ -67,7 +67,7 @@
     "isEntry": true
   },
   "resources/swagger/swagger.js": {
-    "file": "assets/swagger-C0zFr3h2.js",
+    "file": "assets/swagger-BQCxHGEd.js",
     "name": "swagger",
     "src": "resources/swagger/swagger.js",
     "isEntry": true,

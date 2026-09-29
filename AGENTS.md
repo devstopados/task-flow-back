@@ -91,7 +91,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 
 ### Model Creation
 
-- When creating new models, create useful factories and seeders for them too. Ask the user if they need any other things, using `php artisan make:model --help` to check the available options.
+- Ao criar CRUDs ou novos models, NÃO crie factory nem seeder, a menos que seja explicitamente solicitado pelo usuário.
 
 ## APIs & Eloquent Resources
 

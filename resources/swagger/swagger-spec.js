@@ -1,4 +1,5 @@
 import auth from './docs/auth';
+import project from './docs/project';
 import user from './docs/user';
 
 export default {
@@ -26,10 +27,15 @@ export default {
             name: 'User',
             description: 'Endpoints de perfil de usuário',
         },
+        {
+            name: 'Projects',
+            description: 'Endpoints de gerenciamento de projetos',
+        },
     ],
     paths: {
         ...auth,
         ...user,
+        ...project,
     },
     components: {
         securitySchemes: {
@@ -101,6 +107,68 @@ export default {
                         },
                         example: {
                             email: ['The email has already been taken.'],
+                        },
+                    },
+                },
+            },
+            Project: {
+                type: 'object',
+                properties: {
+                    id: { type: 'integer', example: 1 },
+                    name: { type: 'string', maxLength: 150, example: 'Sistema de Gestão' },
+                    active: { type: 'boolean', example: true },
+                    created_at: { type: 'string', format: 'date-time', example: '2026-09-29T16:00:00.000000Z' },
+                    updated_at: { type: 'string', format: 'date-time', example: '2026-09-29T16:00:00.000000Z' },
+                },
+            },
+            StoreProjectRequest: {
+                type: 'object',
+                required: ['name'],
+                properties: {
+                    name: { type: 'string', maxLength: 150, example: 'Sistema de Gestão' },
+                    active: { type: 'boolean', default: true, example: true },
+                },
+            },
+            UpdateProjectRequest: {
+                type: 'object',
+                properties: {
+                    name: { type: 'string', maxLength: 150, example: 'Sistema de Gestão Atualizado' },
+                    active: { type: 'boolean', example: false },
+                },
+            },
+            ProjectSingleResponse: {
+                type: 'object',
+                properties: {
+                    message: { type: 'string', example: 'Projeto criado com sucesso.' },
+                    data: { $ref: '#/components/schemas/Project' },
+                },
+            },
+            ProjectListResponse: {
+                type: 'object',
+                properties: {
+                    data: {
+                        type: 'array',
+                        items: { $ref: '#/components/schemas/Project' },
+                    },
+                    links: {
+                        type: 'object',
+                        properties: {
+                            first: { type: 'string', nullable: true },
+                            last: { type: 'string', nullable: true },
+                            prev: { type: 'string', nullable: true },
+                            next: { type: 'string', nullable: true },
+                        },
+                    },
+                    meta: {
+                        type: 'object',
+                        properties: {
+                            current_page: { type: 'integer' },
+                            from: { type: 'integer', nullable: true },
+                            last_page: { type: 'integer' },
+                            path: { type: 'string' },
+                            per_page: { type: 'integer' },
+                            to: { type: 'integer', nullable: true },
+                            total: { type: 'integer' },
                         },
                     },
                 },
