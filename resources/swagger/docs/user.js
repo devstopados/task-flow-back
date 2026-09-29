@@ -9,9 +9,22 @@ export default {
             ],
             responses: {
                 200: {
-                    description: "Successful response",
+                    description: "Dados do perfil do usuário autenticado",
                     content: {
                         "application/json": {
+                            schema: {
+                                $ref: "#/components/schemas/UserProfileResponse",
+                            },
+                        },
+                    },
+                },
+                401: {
+                    description: "Não autenticado",
+                    content: {
+                        "application/json": {
+                            schema: {
+                                $ref: "#/components/schemas/MessageResponse",
+                            },
                         },
                     },
                 },
