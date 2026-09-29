@@ -23,7 +23,7 @@ class ProjectService
      * @param  array{search?: string|null, active?: bool|string|null}  $filters
      * @return LengthAwarePaginator<int, Project>
      */
-    public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function paginate(int $perPage = 10, array $filters = []): LengthAwarePaginator
     {
         return $this->projectRepository->paginate($perPage, $filters);
     }

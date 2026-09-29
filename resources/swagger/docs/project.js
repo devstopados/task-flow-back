@@ -34,8 +34,8 @@ export default {
                     name: "per_page",
                     in: "query",
                     required: false,
-                    description: "Quantidade de itens por página (padrão: 15)",
-                    schema: { type: "integer", default: 15 },
+                    description: "Quantidade de itens por página (padrão: 10)",
+                    schema: { type: "integer", default: 10 },
                 },
                 {
                     name: "page",

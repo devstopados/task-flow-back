@@ -14,7 +14,7 @@ interface ProjectRepositoryInterface
      * @param  array{search?: string|null, active?: bool|string|null}  $filters
      * @return LengthAwarePaginator<int, Project>
      */
-    public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
+    public function paginate(int $perPage = 10, array $filters = []): LengthAwarePaginator;
 
     /**
      * Get all projects with optional filters.

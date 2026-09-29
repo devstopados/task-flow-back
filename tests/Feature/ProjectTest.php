@@ -37,7 +37,8 @@ test('authenticated user can list projects with pagination', function () {
             'meta' => ['current_page', 'total', 'per_page'],
         ]);
 
-    expect($response->json('data'))->toHaveCount(15);
+    expect($response->json('data'))->toHaveCount(10)
+        ->and($response->json('meta.per_page'))->toBe(10);
 });
 
 test('authenticated user can list all projects using all parameter', function () {
