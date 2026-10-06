@@ -1,6 +1,7 @@
 import auth from './docs/auth';
 import project from './docs/project';
 import subproject from './docs/subproject';
+import task from './docs/task';
 import user from './docs/user';
 
 export default {
@@ -36,12 +37,17 @@ export default {
             name: 'Subprojects',
             description: 'Endpoints de gerenciamento de subprojetos',
         },
+        {
+            name: 'Tasks',
+            description: 'Endpoints de gerenciamento de tarefas',
+        },
     ],
     paths: {
         ...auth,
         ...user,
         ...project,
         ...subproject,
+        ...task,
     },
     components: {
         securitySchemes: {
@@ -221,6 +227,90 @@ export default {
                     data: {
                         type: 'array',
                         items: { $ref: '#/components/schemas/Subproject' },
+                    },
+                    links: {
+                        type: 'object',
+                        properties: {
+                            first: { type: 'string', nullable: true },
+                            last: { type: 'string', nullable: true },
+                            prev: { type: 'string', nullable: true },
+                            next: { type: 'string', nullable: true },
+                        },
+                    },
+                    meta: {
+                        type: 'object',
+                        properties: {
+                            current_page: { type: 'integer' },
+                            from: { type: 'integer', nullable: true },
+                            last_page: { type: 'integer' },
+                            path: { type: 'string' },
+                            per_page: { type: 'integer' },
+                            to: { type: 'integer', nullable: true },
+                            total: { type: 'integer' },
+                        },
+                    },
+                },
+            },
+            Task: {
+                type: 'object',
+                properties: {
+                    id: { type: 'integer', example: 1 },
+                    code: { type: 'string', example: 'TASK-101', nullable: true },
+                    name: { type: 'string', example: 'Desenvolver fluxo de autenticação' },
+                    start_date: { type: 'string', format: 'date-time', example: '2026-10-06T19:00:00.000000Z' },
+                    end_date: { type: 'string', format: 'date-time', example: null, nullable: true },
+                    hours: { type: 'number', format: 'float', example: 4.5, nullable: true },
+                    branch: { type: 'string', example: 'feature/auth-flow', nullable: true },
+                    link: { type: 'string', example: 'https://github.com/org/repo/pull/12', nullable: true },
+                    status_id: { type: 'integer', example: 1 },
+                    subproject_id: { type: 'integer', example: 1, nullable: true },
+                    subproject: { $ref: '#/components/schemas/Subproject' },
+                    created_at: { type: 'string', format: 'date-time', example: '2026-10-06T19:00:00.000000Z' },
+                    updated_at: { type: 'string', format: 'date-time', example: '2026-10-06T19:00:00.000000Z' },
+                },
+            },
+            StoreTaskRequest: {
+                type: 'object',
+                required: ['name', 'status_id'],
+                properties: {
+                    code: { type: 'string', maxLength: 50, example: 'TASK-101' },
+                    name: { type: 'string', maxLength: 255, example: 'Desenvolver fluxo de autenticação' },
+                    start_date: { type: 'string', format: 'date-time', example: '2026-10-06T19:00:00.000000Z' },
+                    end_date: { type: 'string', format: 'date-time', example: '2026-10-06T22:00:00.000000Z' },
+                    hours: { type: 'number', format: 'float', example: 3.5 },
+                    branch: { type: 'string', maxLength: 255, example: 'feature/auth' },
+                    link: { type: 'string', maxLength: 500, example: 'https://github.com/org/repo/issues/10' },
+                    status_id: { type: 'integer', example: 1 },
+                    subproject_id: { type: 'integer', example: 1 },
+                },
+            },
+            UpdateTaskRequest: {
+                type: 'object',
+                properties: {
+                    code: { type: 'string', maxLength: 50, example: 'TASK-101' },
+                    name: { type: 'string', maxLength: 255, example: 'Desenvolver fluxo atualizado' },
+                    start_date: { type: 'string', format: 'date-time' },
+                    end_date: { type: 'string', format: 'date-time' },
+                    hours: { type: 'number', format: 'float', example: 6.0 },
+                    branch: { type: 'string', maxLength: 255 },
+                    link: { type: 'string', maxLength: 500 },
+                    status_id: { type: 'integer', example: 2 },
+                    subproject_id: { type: 'integer', example: 1 },
+                },
+            },
+            TaskSingleResponse: {
+                type: 'object',
+                properties: {
+                    message: { type: 'string', example: 'Tarefa criada com sucesso.' },
+                    data: { $ref: '#/components/schemas/Task' },
+                },
+            },
+            TaskListResponse: {
+                type: 'object',
+                properties: {
+                    data: {
+                        type: 'array',
+                        items: { $ref: '#/components/schemas/Task' },
                     },
                     links: {
                         type: 'object',

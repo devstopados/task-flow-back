@@ -88,11 +88,7 @@ test('authenticated user can filter subprojects by search, active status, and pr
     $projectFilterResponse = $this->getJson(route('subprojects.index', ['project_id' => $project2->id]));
     $projectFilterResponse->assertStatus(200);
     expect($projectFilterResponse->json('data'))->toHaveCount(1)
-        ->and($response->json('data.0.name'))->toBe('Módulo Financeiro');
-
-    $projetoIdFilterResponse = $this->getJson(route('subprojects.index', ['projeto_id' => $project1->id]));
-    $projetoIdFilterResponse->assertStatus(200);
-    expect($projetoIdFilterResponse->json('data'))->toHaveCount(2);
+        ->and($projectFilterResponse->json('data.0.name'))->toBe('Módulo Estoque');
 });
 
 test('authenticated user can create a subproject successfully', function () {
@@ -126,36 +122,6 @@ test('authenticated user can create a subproject successfully', function () {
     $this->assertDatabaseHas('subprojects', [
         'project_id' => $project->id,
         'name' => 'Subprojeto Novo',
-        'active' => true,
-    ]);
-});
-
-test('authenticated user can create a subproject using projeto_id attribute', function () {
-    $user = User::factory()->create();
-    Sanctum::actingAs($user);
-
-    $project = Project::query()->create(['name' => 'Projeto Pai', 'active' => true]);
-
-    $payload = [
-        'projeto_id' => $project->id,
-        'name' => 'Subprojeto via alias',
-    ];
-
-    $response = $this->postJson(route('subprojects.store'), $payload);
-
-    $response->assertStatus(201)
-        ->assertJson([
-            'message' => 'Subprojeto criado com sucesso.',
-            'data' => [
-                'project_id' => $project->id,
-                'name' => 'Subprojeto via alias',
-                'active' => true,
-            ],
-        ]);
-
-    $this->assertDatabaseHas('subprojects', [
-        'project_id' => $project->id,
-        'name' => 'Subprojeto via alias',
         'active' => true,
     ]);
 });

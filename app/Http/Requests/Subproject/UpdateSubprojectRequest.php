@@ -16,18 +16,6 @@ class UpdateSubprojectRequest extends FormRequest
     }
 
     /**
-     * Prepare the data for validation.
-     */
-    protected function prepareForValidation(): void
-    {
-        if ($this->has('projeto_id') && ! $this->has('project_id')) {
-            $this->merge([
-                'project_id' => $this->input('projeto_id'),
-            ]);
-        }
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, ValidationRule|array<mixed>|string>

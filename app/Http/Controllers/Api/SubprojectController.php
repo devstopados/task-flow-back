@@ -25,10 +25,7 @@ class SubprojectController extends Controller
      */
     public function index(Request $request): AnonymousResourceCollection
     {
-        $filters = $request->only(['search', 'active', 'project_id', 'projeto_id']);
-        if (! empty($filters['projeto_id']) && empty($filters['project_id'])) {
-            $filters['project_id'] = $filters['projeto_id'];
-        }
+        $filters = $request->only(['search', 'active', 'project_id']);
 
         if ($request->boolean('all')) {
             return SubprojectResource::collection($this->subprojectService->all($filters));
