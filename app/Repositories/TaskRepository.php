@@ -41,7 +41,7 @@ class TaskRepository implements TaskRepositoryInterface
      */
     public function findById(int $id): ?Task
     {
-        return Task::query()->with('subproject')->find($id);
+        return Task::query()->with(['subproject', 'status'])->find($id);
     }
 
     /**
@@ -83,7 +83,7 @@ class TaskRepository implements TaskRepositoryInterface
      */
     private function applyFilters(Builder $query, array $filters): Builder
     {
-        $query->with('subproject');
+        $query->with(['subproject', 'status']);
 
         if (! empty($filters['search'])) {
             $search = trim((string) $filters['search']);

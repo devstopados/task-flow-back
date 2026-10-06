@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProjectController;
+use App\Http\Controllers\Api\StatusTaskController;
 use App\Http\Controllers\Api\SubprojectController;
 use App\Http\Controllers\Api\TaskController;
 use Illuminate\Support\Facades\Route;
@@ -20,5 +21,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'me'])->name('user.profile');
     Route::apiResource('projects', ProjectController::class);
     Route::apiResource('subprojects', SubprojectController::class);
+    Route::apiResource('status-tasks', StatusTaskController::class);
     Route::apiResource('tasks', TaskController::class);
 });

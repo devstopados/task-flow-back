@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('hours', 7, 2)->nullable();
             $table->string('branch', 255)->nullable();
             $table->string('link', 500)->nullable();
-            $table->unsignedBigInteger('status_id')->index();
+            $table->foreignId('status_id')->constrained('status_tasks');
             $table->foreignId('subproject_id')->nullable()->constrained('subprojects')->nullOnDelete();
             $table->timestamps();
         });

@@ -1,5 +1,6 @@
 import auth from './docs/auth';
 import project from './docs/project';
+import statusTasks from './docs/status-tasks';
 import subproject from './docs/subproject';
 import task from './docs/task';
 import user from './docs/user';
@@ -38,6 +39,10 @@ export default {
             description: 'Endpoints de gerenciamento de subprojetos',
         },
         {
+            name: 'StatusTasks',
+            description: 'Endpoints de gerenciamento de status de tarefas',
+        },
+        {
             name: 'Tasks',
             description: 'Endpoints de gerenciamento de tarefas',
         },
@@ -47,6 +52,7 @@ export default {
         ...user,
         ...project,
         ...subproject,
+        ...statusTasks,
         ...task,
     },
     components: {
@@ -263,6 +269,7 @@ export default {
                     branch: { type: 'string', example: 'feature/auth-flow', nullable: true },
                     link: { type: 'string', example: 'https://github.com/org/repo/pull/12', nullable: true },
                     status_id: { type: 'integer', example: 1 },
+                    status: { $ref: '#/components/schemas/StatusTask' },
                     subproject_id: { type: 'integer', example: 1, nullable: true },
                     subproject: { $ref: '#/components/schemas/Subproject' },
                     created_at: { type: 'string', format: 'date-time', example: '2026-10-06T19:00:00.000000Z' },
@@ -311,6 +318,71 @@ export default {
                     data: {
                         type: 'array',
                         items: { $ref: '#/components/schemas/Task' },
+                    },
+                    links: {
+                        type: 'object',
+                        properties: {
+                            first: { type: 'string', nullable: true },
+                            last: { type: 'string', nullable: true },
+                            prev: { type: 'string', nullable: true },
+                            next: { type: 'string', nullable: true },
+                        },
+                    },
+                    meta: {
+                        type: 'object',
+                        properties: {
+                            current_page: { type: 'integer' },
+                            from: { type: 'integer', nullable: true },
+                            last_page: { type: 'integer' },
+                            path: { type: 'string' },
+                            per_page: { type: 'integer' },
+                            to: { type: 'integer', nullable: true },
+                            total: { type: 'integer' },
+                        },
+                    },
+                },
+            },
+            StatusTask: {
+                type: 'object',
+                properties: {
+                    id: { type: 'integer', example: 1 },
+                    slug: { type: 'string', example: 'em-andamento' },
+                    name: { type: 'string', example: 'Em Andamento' },
+                    active: { type: 'boolean', example: true },
+                    created_at: { type: 'string', format: 'date-time', example: '2026-10-06T20:00:00.000000Z' },
+                    updated_at: { type: 'string', format: 'date-time', example: '2026-10-06T20:00:00.000000Z' },
+                },
+            },
+            StoreStatusTaskRequest: {
+                type: 'object',
+                required: ['name'],
+                properties: {
+                    name: { type: 'string', maxLength: 150, example: 'Em Andamento' },
+                    slug: { type: 'string', maxLength: 100, example: 'em-andamento' },
+                    active: { type: 'boolean', default: true, example: true },
+                },
+            },
+            UpdateStatusTaskRequest: {
+                type: 'object',
+                properties: {
+                    name: { type: 'string', maxLength: 150, example: 'Em Andamento Atualizado' },
+                    slug: { type: 'string', maxLength: 100, example: 'em-andamento' },
+                    active: { type: 'boolean', example: false },
+                },
+            },
+            StatusTaskSingleResponse: {
+                type: 'object',
+                properties: {
+                    message: { type: 'string', example: 'Status da tarefa criado com sucesso.' },
+                    data: { $ref: '#/components/schemas/StatusTask' },
+                },
+            },
+            StatusTaskListResponse: {
+                type: 'object',
+                properties: {
+                    data: {
+                        type: 'array',
+                        items: { $ref: '#/components/schemas/StatusTask' },
                     },
                     links: {
                         type: 'object',

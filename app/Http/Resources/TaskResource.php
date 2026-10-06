@@ -28,6 +28,7 @@ class TaskResource extends JsonResource
             'branch' => $this->branch,
             'link' => $this->link,
             'status_id' => $this->status_id,
+            'status' => new StatusTaskResource($this->whenLoaded('status')),
             'subproject_id' => $this->subproject_id,
             'subproject' => new SubprojectResource($this->whenLoaded('subproject')),
             'created_at' => $this->created_at?->toISOString(),

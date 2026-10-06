@@ -42,7 +42,7 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request): JsonResponse
     {
         $task = $this->taskService->create($request->validated());
-        $task->load('subproject');
+        $task->load(['subproject', 'status']);
 
         return response()->json([
             'message' => 'Tarefa criada com sucesso.',
@@ -68,7 +68,7 @@ class TaskController extends Controller
     public function update(UpdateTaskRequest $request, int $id): JsonResponse
     {
         $task = $this->taskService->update($id, $request->validated());
-        $task->load('subproject');
+        $task->load(['subproject', 'status']);
 
         return response()->json([
             'message' => 'Tarefa atualizada com sucesso.',

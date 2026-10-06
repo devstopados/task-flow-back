@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Project;
+use App\Models\StatusTask;
 use App\Models\Subproject;
 use App\Models\Task;
 use App\Models\User;
@@ -8,6 +9,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 
 uses(RefreshDatabase::class);
+
+beforeEach(function () {
+    $this->status1 = StatusTask::query()->create(['id' => 1, 'name' => 'Pendente', 'slug' => 'pendente', 'active' => true]);
+    $this->status2 = StatusTask::query()->create(['id' => 2, 'name' => 'Em Andamento', 'slug' => 'em-andamento', 'active' => true]);
+    $this->status3 = StatusTask::query()->create(['id' => 3, 'name' => 'Concluído', 'slug' => 'concluido', 'active' => true]);
+});
 
 test('unauthenticated user cannot access tasks endpoints', function () {
     $this->getJson(route('tasks.index'))->assertStatus(401);
@@ -44,6 +51,7 @@ test('authenticated user can list tasks with pagination', function () {
                     'branch',
                     'link',
                     'status_id',
+                    'status',
                     'subproject_id',
                     'subproject',
                     'created_at',
@@ -160,6 +168,7 @@ test('authenticated user can create a task successfully with all fields', functi
                 'branch',
                 'link',
                 'status_id',
+                'status',
                 'subproject_id',
                 'subproject',
                 'created_at',
@@ -205,7 +214,7 @@ test('start_date defaults automatically when omitted on creation', function () {
     ]);
 });
 
-test('cannot create task without required fields or invalid subproject', function () {
+test('cannot create task without required fields or invalid relations', function () {
     $user = User::factory()->create();
     Sanctum::actingAs($user);
 
@@ -225,6 +234,14 @@ test('cannot create task without required fields or invalid subproject', functio
 
     $invalidSubprojectResponse->assertStatus(422)
         ->assertJsonValidationErrors(['subproject_id']);
+
+    $invalidStatusResponse = $this->postJson(route('tasks.store'), [
+        'name' => 'Tarefa Teste',
+        'status_id' => 99999,
+    ]);
+
+    $invalidStatusResponse->assertStatus(422)
+        ->assertJsonValidationErrors(['status_id']);
 });
 
 test('authenticated user can view a task by id', function () {

@@ -34,4 +34,14 @@ class Task extends Model
     {
         return $this->belongsTo(Subproject::class);
     }
+
+    /**
+     * Get the status that owns the task.
+     *
+     * @return BelongsTo<StatusTask, $this>
+     */
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(StatusTask::class, 'status_id');
+    }
 }

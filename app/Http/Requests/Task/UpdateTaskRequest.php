@@ -50,7 +50,7 @@ class UpdateTaskRequest extends FormRequest
             'hours' => ['nullable', 'numeric', 'min:0', 'max:99999.99'],
             'branch' => ['nullable', 'string', 'max:255'],
             'link' => ['nullable', 'string', 'max:500'],
-            'status_id' => ['sometimes', 'required', 'integer'],
+            'status_id' => ['sometimes', 'required', 'integer', 'exists:status_tasks,id'],
             'subproject_id' => ['nullable', 'integer', 'exists:subprojects,id'],
         ];
     }
