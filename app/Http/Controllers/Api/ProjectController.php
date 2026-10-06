@@ -31,7 +31,7 @@ class ProjectController extends Controller
             return ProjectResource::collection($this->projectService->all($filters));
         }
 
-        $perPage = max(1, (int) $request->input('per_page', 10));
+        $perPage = max(1, (int) ($request->input('per_page') ?: 10));
 
         return ProjectResource::collection($this->projectService->paginate($perPage, $filters));
     }

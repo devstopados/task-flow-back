@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['name', 'active'])]
-class Project extends Model
+#[Fillable(['project_id', 'name', 'active'])]
+class Subproject extends Model
 {
     /**
      * Get the attributes that should be cast.
@@ -17,17 +17,18 @@ class Project extends Model
     protected function casts(): array
     {
         return [
+            'project_id' => 'integer',
             'active' => 'boolean',
         ];
     }
 
     /**
-     * Get the subprojects for the project.
+     * Get the project that owns the subproject.
      *
-     * @return HasMany<Subproject, $this>
+     * @return BelongsTo<Project, $this>
      */
-    public function subprojects(): HasMany
+    public function project(): BelongsTo
     {
-        return $this->hasMany(Subproject::class);
+        return $this->belongsTo(Project::class);
     }
 }

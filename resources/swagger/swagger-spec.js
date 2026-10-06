@@ -1,5 +1,6 @@
 import auth from './docs/auth';
 import project from './docs/project';
+import subproject from './docs/subproject';
 import user from './docs/user';
 
 export default {
@@ -31,11 +32,16 @@ export default {
             name: 'Projects',
             description: 'Endpoints de gerenciamento de projetos',
         },
+        {
+            name: 'Subprojects',
+            description: 'Endpoints de gerenciamento de subprojetos',
+        },
     ],
     paths: {
         ...auth,
         ...user,
         ...project,
+        ...subproject,
     },
     components: {
         securitySchemes: {
@@ -149,6 +155,72 @@ export default {
                     data: {
                         type: 'array',
                         items: { $ref: '#/components/schemas/Project' },
+                    },
+                    links: {
+                        type: 'object',
+                        properties: {
+                            first: { type: 'string', nullable: true },
+                            last: { type: 'string', nullable: true },
+                            prev: { type: 'string', nullable: true },
+                            next: { type: 'string', nullable: true },
+                        },
+                    },
+                    meta: {
+                        type: 'object',
+                        properties: {
+                            current_page: { type: 'integer' },
+                            from: { type: 'integer', nullable: true },
+                            last_page: { type: 'integer' },
+                            path: { type: 'string' },
+                            per_page: { type: 'integer' },
+                            to: { type: 'integer', nullable: true },
+                            total: { type: 'integer' },
+                        },
+                    },
+                },
+            },
+            Subproject: {
+                type: 'object',
+                properties: {
+                    id: { type: 'integer', example: 1 },
+                    project_id: { type: 'integer', example: 1 },
+                    name: { type: 'string', example: 'Módulo Financeiro' },
+                    active: { type: 'boolean', example: true },
+                    project: { $ref: '#/components/schemas/Project' },
+                    created_at: { type: 'string', format: 'date-time', example: '2026-10-06T16:00:00.000000Z' },
+                    updated_at: { type: 'string', format: 'date-time', example: '2026-10-06T16:00:00.000000Z' },
+                },
+            },
+            StoreSubprojectRequest: {
+                type: 'object',
+                required: ['project_id', 'name'],
+                properties: {
+                    project_id: { type: 'integer', example: 1 },
+                    name: { type: 'string', maxLength: 150, example: 'Módulo Financeiro' },
+                    active: { type: 'boolean', default: true, example: true },
+                },
+            },
+            UpdateSubprojectRequest: {
+                type: 'object',
+                properties: {
+                    project_id: { type: 'integer', example: 1 },
+                    name: { type: 'string', maxLength: 150, example: 'Módulo Financeiro Atualizado' },
+                    active: { type: 'boolean', example: false },
+                },
+            },
+            SubprojectSingleResponse: {
+                type: 'object',
+                properties: {
+                    message: { type: 'string', example: 'Subprojeto criado com sucesso.' },
+                    data: { $ref: '#/components/schemas/Subproject' },
+                },
+            },
+            SubprojectListResponse: {
+                type: 'object',
+                properties: {
+                    data: {
+                        type: 'array',
+                        items: { $ref: '#/components/schemas/Subproject' },
                     },
                     links: {
                         type: 'object',
