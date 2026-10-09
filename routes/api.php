@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProjectController;
+use App\Http\Controllers\Api\SprintController;
 use App\Http\Controllers\Api\StatusTaskController;
 use App\Http\Controllers\Api\SubprojectController;
 use App\Http\Controllers\Api\TaskController;
@@ -23,4 +24,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('subprojects', SubprojectController::class);
     Route::apiResource('status-tasks', StatusTaskController::class);
     Route::apiResource('tasks', TaskController::class);
+    Route::apiResource('sprints', SprintController::class);
 });

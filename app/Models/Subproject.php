@@ -42,4 +42,14 @@ class Subproject extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+    /**
+     * Get the sprints for the subproject.
+     *
+     * @return HasMany<Sprint, $this>
+     */
+    public function sprints(): HasMany
+    {
+        return $this->hasMany(Sprint::class);
+    }
 }

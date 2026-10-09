@@ -32,7 +32,7 @@ class StatusTaskRepository implements StatusTaskRepositoryInterface
     public function all(array $filters = []): Collection
     {
         return $this->applyFilters(StatusTask::query(), $filters)
-            ->latest('id')
+            ->orderBy('id', 'asc')
             ->get();
     }
 
